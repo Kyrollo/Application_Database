@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Ibex</string>
+    <string name="data_entry">Data Entry</string>
+    <string name="data_display">Data Display</string>
+    <string name="delete_all">Delete All</string>
+    <string name="export">Export</string>
+    <string name="profile_image">Profile Image</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="item_description">Item Description</string>
+    <string name="quantity">Quantity</string>
+    <string name="item_quantity">Item Quantity</string>
+    <string name="category_name">Category Name:</string>
+    <string name="login">Login</string>
+    <string name="item_desc">Item Desc</string>
+    <string name="add_category">Add Category</string>
+    <string name="add_item">Add Item</string>
+    <string name="category">Category</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+</resources>

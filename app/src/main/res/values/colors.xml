@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primaryColor">#109FE0</color>
+    <color name="secondaryColor">#03DAC5</color>
+    <color name="primaryDarkColor">#2F3864</color>
+    <color name="secondaryDarkColor">#463761</color>
+    <color name="onPrimaryColor">#FFFFFF</color>
+    <color name="onSecondaryColor">#000000</color>
+    <color name="toolbar">#1D2D83</color>
+    <color name="backgroundColor">#A4C7ED</color>
+</resources>

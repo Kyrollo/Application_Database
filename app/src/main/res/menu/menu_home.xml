@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_dataEntry"
+        android:icon="@drawable/ic_data_entry"
+        android:textColor="@color/onSecondaryColor"
+        android:title="@string/data_entry" />
+    <item
+        android:id="@+id/action_dataDisplay"
+        android:icon="@drawable/ic_data_display"
+        android:textColor="@color/onSecondaryColor"
+        android:title="@string/data_display" />
+</menu>
