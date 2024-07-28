@@ -61,7 +61,8 @@ public class DataDisplay extends AppCompatActivity implements AdapterView.OnItem
     private void loadCategoryDescriptions() {
         categories = db.categoryDao().getAllCategories();
         categoryDescList = new ArrayList<>();
-        categoryDescList.add("Select a Category");
+        categoryDescList.add(getString(R.string.selectCategory));
+
         for (Category category : categories) {
             categoryDescList.add(category.getCategoryDesc());
         }

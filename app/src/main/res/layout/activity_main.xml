@@ -86,6 +86,30 @@
         app:layout_constraintTop_toBottomOf="@id/password"
         tools:ignore="DuplicateSpeakableTextCheck,HardcodedText" />
 
+    <ImageView
+        android:id="@+id/icon_arabic"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="240dp"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/arabic"
+        android:contentDescription="@string/arabic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/login_button"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/icon_english"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="240dp"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/english"
+        android:contentDescription="@string/english"
+        app:layout_constraintEnd_toStartOf="@id/icon_arabic"
+        app:layout_constraintTop_toBottomOf="@id/login_button"
+        tools:ignore="ContentDescription" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"

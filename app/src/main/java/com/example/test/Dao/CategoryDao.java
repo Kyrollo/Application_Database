@@ -22,6 +22,9 @@ public interface CategoryDao {
     @Query("SELECT category_desc FROM category")
     List<String> getAllCategoriesNames();
 
+    @Query("SELECT * FROM category WHERE category_desc = :categoryDesc")
+    Category getCategoryByDesc(String categoryDesc);
+
     @Query("DELETE FROM category")
     void deleteAll();
 

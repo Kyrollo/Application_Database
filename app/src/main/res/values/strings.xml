@@ -3,19 +3,27 @@
     <string name="data_entry">Data Entry</string>
     <string name="data_display">Data Display</string>
     <string name="delete_all">Delete All</string>
-    <string name="export">Export</string>
+    <string name="export">Export File</string>
+    <string name="import_file">Import File</string>
     <string name="profile_image">Profile Image</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="item_description">Item Description</string>
-    <string name="quantity">Quantity</string>
+    <string name="itemDescription">Item Description:</string>
+    <string name="quantity">Item Quantity:</string>
+    <string name="itemQuantity">Enter Item Quantity</string>
     <string name="item_quantity">Item Quantity</string>
     <string name="category_name">Category Name:</string>
+    <string name="selectCategory">Select a category</string>
     <string name="login">Login</string>
-    <string name="item_desc">Item Desc</string>
+    <string name="item_desc">Enter Item Desciption</string>
     <string name="add_category">Add Category</string>
     <string name="add_item">Add Item</string>
-    <string name="category">Category</string>
-    <string name="username">Username</string>
-    <string name="password">Password</string>
+    <string name="category">Enter Category Name</string>
+    <string name="username">Enter your username</string>
+    <string name="password">Enter your password</string>
+
+
+    <string name="arabic">عربي</string>
+    <string name="english">English</string>
 </resources>

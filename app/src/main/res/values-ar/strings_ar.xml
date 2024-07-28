@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ibex</string>
+    <string name="data_entry">إدخال البيانات</string>
+    <string name="data_display">عرض البيانات</string>
+    <string name="delete_all">مسح جميع البيانات</string>
+    <string name="export">تصدير ملف</string>
+    <string name="import_file">استيراد ملف</string>
+    <string name="profile_image">صورة المعرض الشخصي</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="item_description">شرح العنصر</string>
+    <string name="itemDescription">شرح العنصر:</string>
+    <string name="quantity">كمية العنصر:</string>
+    <string name="itemQuantity">أدخل الكمية</string>
+    <string name="item_quantity">كمية العنصر</string>
+    <string name="category_name">أسم الفئة:</string>
+    <string name="selectCategory">أختر فئة</string>
+    <string name="login">تسجيل الدخول</string>
+    <string name="item_desc">أدخل شرح العنصر</string>
+    <string name="add_category">إضافة فئة</string>
+    <string name="add_item">إضافة عنصر</string>
+    <string name="category">أدخل الفئة</string>
+    <string name="username">أدخل اسم المستخدم الخاص بك</string>
+    <string name="password">أدخل كلمة المرور الخاصة بك</string>
+
+    <string name="arabic">عربي</string>
+    <string name="english">English</string>
+</resources>

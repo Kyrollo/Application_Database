@@ -24,6 +24,8 @@ import com.google.android.material.navigation.NavigationView;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.File;
 import java.util.List;
@@ -36,6 +38,7 @@ import com.example.test.Tabels.Item;
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
     private AppDatabase db;
+    private static final int PICK_EXCEL_FILE = 1;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -104,7 +107,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         for (Category category : categories) {
             List<Item> items = db.itemDao().getItemsById(category.getCategoryId());
             String fileName = category.getCategoryDesc() + ".xlsx";
-            File file = new File(getExternalFilesDir(null), fileName);
+            File file = new File(Environment.getExternalStorageDirectory(), fileName);
 
             try {
                 XSSFWorkbook workbook = new XSSFWorkbook();
@@ -152,6 +155,74 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    private void importExcelFile(Uri fileUri) {
+        try {
+            FileInputStream inputStream = (FileInputStream) getContentResolver().openInputStream(fileUri);
+            XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+            XSSFSheet sheet = workbook.getSheetAt(0);
+
+            for (int i = 0; i <= sheet.getLastRowNum(); i++) {
+                XSSFRow row = sheet.getRow(i);
+                if (row != null){
+                    String itemDesc = row.getCell(0).getStringCellValue();
+                    int qty = (int) row.getCell(1).getNumericCellValue();
+                    String categoryDesc = row.getCell(2).getStringCellValue();
+                    if (categoryDesc == null || categoryDesc.trim().isEmpty()) {
+                        break;
+                    }
+                    else{
+                        // Skip creating an item if the category description is empty or null
+                        Category category = db.categoryDao().getCategoryByDesc(categoryDesc);
+
+                        // Check if category already exists
+                        if (category == null) {
+                            // Insert new category
+                            Category newCategory = new Category();
+                            newCategory.setCategoryDesc(categoryDesc);
+                            db.categoryDao().insert(newCategory);
+                            category = db.categoryDao().getCategoryByDesc(categoryDesc);
+
+                        }
+                        // Insert item's attributes
+                        Item item = new Item();
+                        item.setItemDesc(itemDesc);
+                        item.setQty(qty);
+                        item.setCategoryId(category.getCategoryId());
+                        db.itemDao().insert(item);
+                    }
+                }
+                else{
+                    // Skip creating loop if row is empty
+                    break;
+                }
+            }
+            workbook.close();
+            inputStream.close();
+
+            Toast.makeText(HomeActivity.this, "Excel file imported successfully", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(HomeActivity.this, "Failed to import Excel file", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void openFilePicker() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        startActivityForResult(intent, PICK_EXCEL_FILE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_EXCEL_FILE && resultCode == RESULT_OK) {
+            if (data != null) {
+                Uri fileUri = data.getData();
+                importExcelFile(fileUri);
+            }
+        }
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -174,6 +245,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.action_dataDisplay) {
             Intent intent = new Intent(HomeActivity.this, DataDisplay.class);
             startActivity(intent);
+        } else if (id == R.id.action_import_excel) {
+            openFilePicker();
         }
 
         drawer.closeDrawer(GravityCompat.START);

@@ -5,9 +5,16 @@
         android:icon="@drawable/ic_data_entry"
         android:textColor="@color/onSecondaryColor"
         android:title="@string/data_entry" />
+
     <item
         android:id="@+id/action_dataDisplay"
         android:icon="@drawable/ic_data_display"
         android:textColor="@color/onSecondaryColor"
         android:title="@string/data_display" />
+
+    <item
+        android:id="@+id/action_import_excel"
+        android:textColor="@color/onSecondaryColor"
+        android:icon="@drawable/ic_import"
+        android:title="@string/import_file"/>
 </menu>
