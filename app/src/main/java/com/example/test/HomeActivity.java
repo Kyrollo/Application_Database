@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -20,6 +21,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.example.test.API.ApiService;
+import com.example.test.ApiClasses.CategoryResponse;
+import com.example.test.ApiClasses.ItemResponse;
 import com.google.android.material.navigation.NavigationView;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -35,16 +40,35 @@ import com.example.test.MenuPages.DataEntry;
 import com.example.test.Tabels.Category;
 import com.example.test.Tabels.Item;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private static final int PICK_EXCEL_FILE = 1;
     private DrawerLayout drawer;
     private AppDatabase db;
-    private static final int PICK_EXCEL_FILE = 1;
+    private ApiService apiService;
+    private List<CategoryResponse> categories;
+    private List<ItemResponse> items;
 
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.1.77:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        apiService = retrofit.create(ApiService.class);
+
+        fetchCategories();
+        fetchItems();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -79,12 +103,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private void showDeleteDialog() {
         new AlertDialog.Builder(this)
-                .setTitle("Delete All Data")
-                .setMessage("Are you sure you want to delete all data?")
-                .setPositiveButton("YES", (dialog, which) -> {
+                .setTitle(getString(R.string.deleteAllDialog))
+                .setMessage(getString(R.string.confirmDeleteDialog))
+                .setPositiveButton(getString(R.string.yesDeleteDialog), (dialog, which) -> {
                     deleteAllData();
                 })
-                .setNegativeButton("NO", (dialog, which) -> {
+                .setNegativeButton(getString(R.string.noDeleteDialog), (dialog, which) -> {
                     dialog.dismiss();
                 })
                 .create()
@@ -96,7 +120,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         db.itemDao().deleteAll();
         db.categoryDao().resetPrimaryKey();
         db.itemDao().resetPrimaryKey();
-        Toast.makeText(HomeActivity.this, "All data deleted", Toast.LENGTH_SHORT).show();
+        Toast.makeText(HomeActivity.this, getString(R.string.dataDeleted), Toast.LENGTH_SHORT).show();
     }
 
     public void createExcelFiles() {
@@ -131,10 +155,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 workbook.close();
                 outputStream.close();
 
-                Toast.makeText(HomeActivity.this, "Excel file for " + category.getCategoryDesc() + " created successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeActivity.this, getString(R.string.firstCreatedExcelFile) + category.getCategoryDesc() + getString(R.string.secondCreatedExcelFile), Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(HomeActivity.this, "Failed to create Excel file for " + category.getCategoryDesc(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeActivity.this, getString(R.string.failedCreateExcelFile) + category.getCategoryDesc(), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -146,10 +170,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     Uri uri = Uri.parse("package:com.example.test");
                     Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri);
                     startActivity(intent);
-                    Toast.makeText(HomeActivity.this, "Permission accepted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HomeActivity.this, getString(R.string.permessionAccepted), Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Toast.makeText(HomeActivity.this, "Permission denied", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HomeActivity.this, getString(R.string.permessionDenied), Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -199,10 +223,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             workbook.close();
             inputStream.close();
 
-            Toast.makeText(HomeActivity.this, "Excel file imported successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(HomeActivity.this, getString(R.string.importSucceded), Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(HomeActivity.this, "Failed to import Excel file", Toast.LENGTH_SHORT).show();
+            Toast.makeText(HomeActivity.this, getString(R.string.importSucceded), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -210,6 +234,48 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         startActivityForResult(intent, PICK_EXCEL_FILE);
+    }
+
+    private void fetchCategories() {
+        apiService.getCategories().enqueue(new Callback<List<CategoryResponse>>() {
+            @Override
+            public void onResponse(Call<List<CategoryResponse>> call, Response<List<CategoryResponse>> response) {
+                if (response.isSuccessful()) {
+                    categories = response.body();
+                } else {
+                    Toast.makeText(getApplicationContext(), getString(R.string.getUsersFailed), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CategoryResponse>> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), getString(R.string.getUsersFailed), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void fetchItems() {
+        apiService.getItems().enqueue(new Callback<List<ItemResponse>>() {
+            @Override
+            public void onResponse(Call<List<ItemResponse>> call, Response<List<ItemResponse>> response) {
+                if (response.isSuccessful()) {
+                    List<ItemResponse> items = response.body();
+                    for (ItemResponse item : items) {
+                        String itemDesc = item.getItemDesc();
+                        int itemID = item.getItemID();
+                        String categoryID = item.getCategoryID();
+                        Log.d("ItemResponse", "ItemDesc: " + itemDesc + ", ItemID: " + itemID + ", CategoryID: " + categoryID);
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), getString(R.string.getUsersFailed), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ItemResponse>> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), getString(R.string.getUsersFailed), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override
@@ -229,8 +295,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (requestCode == PackageManager.PERMISSION_GRANTED) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 createExcelFiles();
-            } else {
-                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
             }
         }
     }

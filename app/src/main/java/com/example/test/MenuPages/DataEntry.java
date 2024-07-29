@@ -36,7 +36,7 @@ public class DataEntry extends AppCompatActivity {
 
             // Ensure category description field is not empty
             if (categoryDesc.isEmpty()) {
-                Toast.makeText(DataEntry.this, "Please enter a category name", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DataEntry.this, getString(R.string.categoryNameValid), Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -58,13 +58,13 @@ public class DataEntry extends AppCompatActivity {
 
             // Ensure category description field is not empty
             if (categoryDesc.isEmpty()) {
-                Toast.makeText(DataEntry.this, "Please enter a category name", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DataEntry.this, getString(R.string.categoryNameValid), Toast.LENGTH_SHORT).show();
                 return;
             }
 
             // Ensure item description field is not empty
             if (itemDesc.isEmpty()) {
-                Toast.makeText(DataEntry.this, "Please enter an item description", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DataEntry.this, getString(R.string.itemDescValid), Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -72,12 +72,12 @@ public class DataEntry extends AppCompatActivity {
             if (qtyStr.matches("\\d+")) {
                 qty = Integer.parseInt(qtyStr);
             } else {
-                Toast.makeText(this, "Please enter a valid quantity", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.itemQtyValid), Toast.LENGTH_SHORT).show();
                 return;
             }
 
             if (isCategoryExist(categoryDesc) == 0) {
-                Toast.makeText(DataEntry.this, "Please Click on Add Category Button", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DataEntry.this, getString(R.string.buttonAddFirst), Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -95,17 +95,17 @@ public class DataEntry extends AppCompatActivity {
         // Insert category if it doesn't exist
         if (isCategoryExist(categoryDesc) == 0) {
             db.categoryDao().insert(category);
-            Toast.makeText(this, "Category Added", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.categoryAdded), Toast.LENGTH_SHORT).show();
         }
         else{
-            Toast.makeText(this, "Category is already exist", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.categoryExist), Toast.LENGTH_SHORT).show();
         }
     }
 
     private void insertItem(Item item, String categoryDesc) {
         item.setCategoryId(getCategoryId(categoryDesc));
         db.itemDao().insert(item);
-        Toast.makeText(this, "Item Added", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.itemAdded), Toast.LENGTH_SHORT).show();
 
 
         // Clear fields after insertion
@@ -133,5 +133,4 @@ public class DataEntry extends AppCompatActivity {
         }
         return -1;
     }
-
 }
