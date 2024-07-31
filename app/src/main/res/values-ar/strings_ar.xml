@@ -38,6 +38,7 @@
     <string name="getCatgoriesFailed">فشل في الحصول على الفئات!</string>
     <string name="getItemsSucceeded">تم الحصول على العناصر بنجاح!</string>
     <string name="getItemsFailed">فشل في الحصول على العناصر!</string>
+    <string name="loadingComplete">تم تحميل جميع البيانات بنجاح!</string>
     <string name="loginFailed">بيانات الدخول غير صحيحة. الرجاء إعادة كتابة اسم المستخدم وكلمة المرور</string>
     <string name="item_desc">أدخل شرح العنصر</string>
     <string name="categoryNameValid">الرجاء إدخال اسم فئة</string>
@@ -55,4 +56,5 @@
 
     <string name="arabic">عربي</string>
     <string name="english">English</string>
+    <string name="download_data">تحميل البيانات</string>
 </resources>

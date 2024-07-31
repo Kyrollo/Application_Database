@@ -92,7 +92,7 @@ public class DataDisplay extends AppCompatActivity implements AdapterView.OnItem
             itemQtyList.clear();
             itemAdapter.notifyDataSetChanged();
         } else {
-            Category selectedCategory = categories.get(position - 1); // Adjust for "Select a Category" option
+            Category selectedCategory = categories.get(position - 1);
             int selectedCategoryId = selectedCategory.getCategoryId();
 
             // Get all items for selected category

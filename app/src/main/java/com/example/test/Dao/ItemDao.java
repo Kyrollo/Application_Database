@@ -15,7 +15,6 @@ public interface ItemDao {
     @Query("SELECT itemId, item_desc, qty, categoryId FROM item WHERE categoryId = :id")
     List<Item> getItemsById(int id);
 
-
     @Query("SELECT * FROM item")
     List<Item> getAllItems();
 

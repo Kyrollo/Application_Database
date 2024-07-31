@@ -114,23 +114,28 @@ public class DataEntry extends AppCompatActivity {
         editQty.setText("");
     }
 
-    private int isCategoryExist(String categoryDesc) {
-        List<Category> categories = db.categoryDao().getAllCategories();
-        for (Category category : categories) {
-            if (categoryDesc.equals(category.getCategoryDesc())) {
-                return 1;
-            }
-        }
-        return 0;
-    }
+//    private int isCategoryExist(String categoryDesc) {
+//        List<Category> categories = db.categoryDao().getAllCategories();
+//        for (Category category : categories) {
+//            if (categoryDesc.equals(category.getCategoryDesc())) {
+//                return 1;
+//            }
+//        }
+//        return 0;
+//    }
 
     private int getCategoryId(String categoryDesc) {
-        List<Category> categories = db.categoryDao().getAllCategories();
-        for (Category category : categories) {
-            if (categoryDesc.equals(category.getCategoryDesc())) {
-                return category.getCategoryId();
-            }
+        Category category = db.categoryDao().getCategoryByDesc(categoryDesc);
+        return category.getCategoryId();
+    }
+
+    private int isCategoryExist(String categoryDesc) {
+        Category category = db.categoryDao().getCategoryByDesc(categoryDesc);
+        if (category != null){
+            return 1;
         }
-        return -1;
+        else{
+            return 0;
+        }
     }
 }

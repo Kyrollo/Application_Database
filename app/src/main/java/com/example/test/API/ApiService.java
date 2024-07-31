@@ -12,9 +12,9 @@ public interface ApiService {
     @GET("api/Connection/GetAllUsers")
     Call<List<User>> getUsers();
 
-    @GET("api/DownloadData/GetAllItems")
+    @GET("api/DownloadData/GetCategories")
     Call<List<CategoryResponse>> getCategories();
 
-    @GET("api/DownloadData/GetCategories")
+    @GET("api/DownloadData/GetAllItems")
     Call<List<ItemResponse>> getItems();
 }

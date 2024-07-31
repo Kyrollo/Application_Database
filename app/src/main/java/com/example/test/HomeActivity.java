@@ -8,9 +8,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Button;
@@ -39,7 +39,6 @@ import com.example.test.MenuPages.DataDisplay;
 import com.example.test.MenuPages.DataEntry;
 import com.example.test.Tabels.Category;
 import com.example.test.Tabels.Item;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,8 +50,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawer;
     private AppDatabase db;
     private ApiService apiService;
-    private List<CategoryResponse> categories;
-    private List<ItemResponse> items;
+    private FrameLayout progressBarContainer;
+    private int apiCallCounter = 0;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -66,9 +65,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 .build();
 
         apiService = retrofit.create(ApiService.class);
-
-        fetchCategories();
-        fetchItems();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -91,14 +87,28 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         TextView navHeaderTitle = headerView.findViewById(R.id.nav_header_title);
         navHeaderTitle.setText(username);
 
+        // Find the buttons
         Button btnDeleteAll = findViewById(R.id.btnDeleteAll);
         Button btnExport = findViewById(R.id.btnExport);
+        Button btnDownload = findViewById(R.id.btnDownload);
 
+        // Find the progress bar
+        progressBarContainer = findViewById(R.id.progressBarContainer);
+
+        // Initialize the database
         db = AppDatabase.getDatabase(this);
 
+        // Set the onClickListeners for the buttons
         btnDeleteAll.setOnClickListener(view -> showDeleteDialog());
 
         btnExport.setOnClickListener(view -> createExcelFiles());
+
+        btnDownload.setOnClickListener(view ->{
+            progressBarContainer.setVisibility(View.VISIBLE);
+            apiCallCounter = 0;
+            fetchCategories();
+            fetchItems();
+        } );
     }
 
     private void showDeleteDialog() {
@@ -240,42 +250,88 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         apiService.getCategories().enqueue(new Callback<List<CategoryResponse>>() {
             @Override
             public void onResponse(Call<List<CategoryResponse>> call, Response<List<CategoryResponse>> response) {
+                List<CategoryResponse> categories = response.body();
                 if (response.isSuccessful()) {
-                    categories = response.body();
+                    insertCategories(categories);
                 } else {
-                    Toast.makeText(getApplicationContext(), getString(R.string.getUsersFailed), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.getCatgoriesFailed), Toast.LENGTH_LONG).show();
                 }
+                checkApiCallsCompletion();
             }
 
             @Override
             public void onFailure(Call<List<CategoryResponse>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), getString(R.string.getUsersFailed), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.getCatgoriesFailed), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void insertCategories(List<CategoryResponse> categories) {
+        int count = 0;
+        for (CategoryResponse categoryResponse : categories) {
+            if (count == 10) {
+                break;
+            }
+            if (!isCategoryExist(categoryResponse.getCategoryID())){
+                Category category = new Category();
+                category.setCategoryDesc(categoryResponse.getCategoryID());
+                db.categoryDao().insert(category);
+            }
+            count++;
+        }
+    }
+
+    private boolean isCategoryExist(String categoryDesc) {
+        Category category = db.categoryDao().getCategoryByDesc(categoryDesc);
+        if (category == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private void fetchItems() {
         apiService.getItems().enqueue(new Callback<List<ItemResponse>>() {
             @Override
             public void onResponse(Call<List<ItemResponse>> call, Response<List<ItemResponse>> response) {
+                List<ItemResponse> items = response.body();
                 if (response.isSuccessful()) {
-                    List<ItemResponse> items = response.body();
-                    for (ItemResponse item : items) {
-                        String itemDesc = item.getItemDesc();
-                        int itemID = item.getItemID();
-                        String categoryID = item.getCategoryID();
-                        Log.d("ItemResponse", "ItemDesc: " + itemDesc + ", ItemID: " + itemID + ", CategoryID: " + categoryID);
-                    }
+                    insertItems(items);
                 } else {
-                    Toast.makeText(getApplicationContext(), getString(R.string.getUsersFailed), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.getItemsFailed), Toast.LENGTH_LONG).show();
                 }
+                checkApiCallsCompletion();
             }
 
             @Override
             public void onFailure(Call<List<ItemResponse>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), getString(R.string.getUsersFailed), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.getItemsFailed), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void insertItems(List<ItemResponse> items) {
+        int count = 0;
+        for (ItemResponse itemResponse : items) {
+            if (count == 10) {
+                break;
+            }
+            Item item = new Item();
+            Category category = db.categoryDao().getCategoryByDesc(itemResponse.getCategoryID());
+            item.setItemDesc(itemResponse.getItemDesc());
+            item.setQty(itemResponse.getItemID());
+            item.setCategoryId(category.getCategoryId());
+            db.itemDao().insert(item);
+            count++;
+        }
+    }
+
+    private void checkApiCallsCompletion() {
+        apiCallCounter++;
+        if (apiCallCounter == 2) {
+            progressBarContainer.setVisibility(View.GONE);
+            Toast.makeText(HomeActivity.this, getString(R.string.loadingComplete), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
