@@ -6,6 +6,7 @@
     <color name="secondaryDarkColor">#463761</color>
     <color name="onPrimaryColor">#FFFFFF</color>
     <color name="onSecondaryColor">#000000</color>
+    <color name="onOrangeColor">#FF9800</color>
     <color name="toolbar">#1D2D83</color>
     <color name="backgroundColor">#A4C7ED</color>
 </resources>

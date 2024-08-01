@@ -90,12 +90,11 @@
         android:id="@+id/icon_arabic"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:src="@drawable/arabic"
         android:contentDescription="@string/arabic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_button"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:ignore="ContentDescription" />
 
     <ImageView

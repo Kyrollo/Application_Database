@@ -53,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:backgroundTint="#FF9800"
+            android:backgroundTint="@color/onOrangeColor"
             android:text="@string/download_data"
             app:layout_constraintTop_toBottomOf="@id/btnExport"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,7 +62,7 @@
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/black"
+            android:background="@color/onSecondaryColor"
             android:padding="16dp"
             android:visibility="gone"
             android:id="@+id/progressBarContainer"
