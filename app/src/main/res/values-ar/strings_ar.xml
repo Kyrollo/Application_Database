@@ -4,7 +4,7 @@
     <string name="data_entry">إدخال البيانات</string>
     <string name="data_display">عرض البيانات</string>
     <string name="delete_all">مسح جميع البيانات</string>
-    <string name="export">تصدير ملف</string>
+    <string name="exportFiles">تصدير ملفات</string>
     <string name="import_file">استيراد ملف</string>
     <string name="profile_image">صورة المعرض الشخصي</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -57,4 +57,17 @@
     <string name="arabic">عربي</string>
     <string name="english">English</string>
     <string name="download_data">تحميل البيانات</string>
+    <string name="scan_and_count">أمسح الكود</string>
+    <string name="bar_code">كود المنتج:</string>
+    <string name="Quantity">الكمية:</string>
+    <string name="change_quantity">تغييرالكمية</string>
+    <string name="export">تصدير</string>
+    <string name="Scanner_Quantity">الكمية</string>
+    <string name="Scanner_barcode">باركود</string>
+    <string name="Recycle_Quantity">الكمية</string>
+    <string name="activity_intent_filter_action">com.example.test.ACTION</string>
+    <string name="datawedge_intent_data_String">com.symbol.datawedge.data_string</string>
+    <string name="waiting_for_scan">في إنتظار المسح</string>
+    <string name="exportSheetName">البيانات</string>
+    <string name="data_Exported_Succssfully">تم تصدير البيانات بنجاح</string>
 </resources>

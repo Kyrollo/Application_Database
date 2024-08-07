@@ -3,7 +3,7 @@
     <string name="data_entry">Data Entry</string>
     <string name="data_display">Data Display</string>
     <string name="delete_all">Delete All</string>
-    <string name="export">Export File</string>
+    <string name="exportFiles">Export Files</string>
     <string name="import_file">Import File</string>
     <string name="profile_image">Profile Image</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -56,4 +56,17 @@
     <string name="arabic">عربي</string>
     <string name="english">English</string>
     <string name="download_data">Download Data</string>
+    <string name="scan_and_count">Scan and Count</string>
+    <string name="bar_code">Bar Code:</string>
+    <string name="Quantity">Quantity:</string>
+    <string name="change_quantity">Change Quantity</string>
+    <string name="export">Export</string>
+    <string name="Scanner_barcode">BarCode</string>
+    <string name="Scanner_Quantity">quantity</string>
+    <string name="Recycle_Quantity">Quantity</string>
+    <string name="activity_intent_filter_action">com.example.test.ACTION</string>
+    <string name="datawedge_intent_data_String">com.symbol.datawedge.data_string</string>
+    <string name="waiting_for_scan">Waiting for scan</string>
+    <string name="exportSheetName">Data</string>
+    <string name="data_Exported_Succssfully">Data Exported Succssfully</string>
 </resources>

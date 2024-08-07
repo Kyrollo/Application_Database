@@ -17,4 +17,10 @@
         android:textColor="@color/onSecondaryColor"
         android:icon="@drawable/ic_import"
         android:title="@string/import_file"/>
+
+    <item
+        android:id="@+id/action_scan_and_count"
+        android:icon="@drawable/ic_scan"
+        android:textColor="@color/onSecondaryColor"
+        android:title="@string/scan_and_count"/>
 </menu>

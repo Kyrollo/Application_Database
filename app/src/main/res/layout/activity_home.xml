@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:backgroundTint="#30CC36"
-            android:text="@string/export"
+            android:text="@string/exportFiles"
             app:layout_constraintTop_toBottomOf="@id/btnDeleteAll"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

@@ -25,6 +25,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.test.API.ApiService;
 import com.example.test.ApiClasses.CategoryResponse;
 import com.example.test.ApiClasses.ItemResponse;
+import com.example.test.Scan.ScanAndCount;
 import com.google.android.material.navigation.NavigationView;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -34,6 +35,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.File;
 import java.util.List;
+import java.util.Scanner;
+
 import com.example.test.Database.AppDatabase;
 import com.example.test.MenuPages.DataDisplay;
 import com.example.test.MenuPages.DataEntry;
@@ -367,6 +370,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
         } else if (id == R.id.action_import_excel) {
             openFilePicker();
+        } else if (id == R.id.action_scan_and_count) {
+            Intent intent = new Intent(HomeActivity.this, ScanAndCount.class);
+            startActivity(intent);
         }
 
         drawer.closeDrawer(GravityCompat.START);
